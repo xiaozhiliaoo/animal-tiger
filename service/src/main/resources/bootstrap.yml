@@ -1,0 +1,4 @@
+spring:
+  application:
+    name: tiger
+    group: org.lili.forfun

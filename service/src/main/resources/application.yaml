@@ -1,0 +1,23 @@
+spring:
+  output:
+    ansi:
+      enabled: DETECT
+  jersey:
+    application-path: /
+  application:
+    name: tiger
+
+server:
+  servlet-path: /admin
+  error.whitelabel.enabled: false
+  tomcat.basedir: /home/admin/tiger/tiger-tomcat
+
+tom:
+  maxConnections: 2000
+  maxThreads: 2000
+  soTimeout: 30000
+
+logging:
+  level:
+    root: DEBUG
+    org.lili.forfun: DEBUG

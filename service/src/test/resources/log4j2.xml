@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="STOUT" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %class{10}: [%L] %message%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO"/>
+
+        <Logger name="org.lili.forfun">
+            <Level value="INFO"/>
+            <AppenderRef ref="STOUT"/>
+        </Logger>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="baseDir">logs</Property>
+        <Property name="logName">tiger</Property>
+        <Property name="springLogName">tiger-spring</Property>
+        <Property name="EX">%xwEx</Property>
+        <Property name="LOG_PATH">logs</Property>
+        <!-- 过往日志格式为: {logName}.log.{保存日期} -->
+        <Property name="backupLog">${baseDir}/${logName}.log.%d{yyyy-MM-dd}</Property>
+        <Property name="backupSpringLog">${baseDir}/${springLogName}.log.%d{yyyy-MM-dd}</Property>
+
+        <Property name="ACCESS_LOG_PATTERN">%m%n</Property>
+        <Property name="ACCESS_LOG_FILE">access.log</Property>
+
+        <Property name="API_LOG_PATTERN">%date{yyyy-MM-dd HH:mm:ss.SSS} %5level [%thread] %class{10} - %message%n</Property>
+        <Property name="API_LOG_FILE">api.log</Property>
+        <!-- 日志文件推荐至少保存15天 -->
+        <Property name="retentionDay">10d</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                    pattern="%clr{%date{MM-dd HH:mm:ss.SSS}}{faint}%clr{%5level}%clr{[%thread]}{magenta}%clr{%class{10} - }{cyan}%message%n${sys:EX}"/>
+        </Console>
+
+        <RollingFile name="STANDARD_FILE" fileName="${baseDir}/${logName}.log" filePattern="${backupLog}">
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %5level [%thread] %class{10} - %message%n</Pattern>
+            </PatternLayout>
+            <!-- The triggering policy determines if a rollover should be performed
+            while the RolloverStrategy defines how the rollover should be done-->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="2 GB"/>
+            </Policies>
+            <!-- The maximum number of files to keep -->
+            <DefaultRolloverStrategy max="15">
+                <Delete basePath="${baseDir}">
+                    <IfFileName glob="${logName}.log.*"/>
+                    <IfLastModified age="${retentionDay}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="SPRING_FILE" fileName="${baseDir}/${springLogName}.log" filePattern="${backupSpringLog}">
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %5level [%thread] %class{10} - %message%n</Pattern>
+            </PatternLayout>
+            <!-- The triggering policy determines if a rollover should be performed
+            while the RolloverStrategy defines how the rollover should be done-->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="2 GB"/>
+            </Policies>
+            <!-- The maximum number of files to keep -->
+            <DefaultRolloverStrategy max="15">
+                <Delete basePath="${baseDir}">
+                    <IfFileName glob="${logName}.log.*"/>
+                    <IfLastModified age="${retentionDay}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="AccessLog" fileName="${LOG_PATH}/${ACCESS_LOG_FILE}"
+                     filePattern="${LOG_PATH}/${ACCESS_LOG_FILE}.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>${ACCESS_LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <!-- The triggering policy determines if a rollover should be performed
+            while the RolloverStrategy defines how the rollover should be done-->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="2 GB"/>
+            </Policies>
+            <!-- The maximum number of files to keep -->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${LOG_PATH}">
+                    <IfFileName glob="${ACCESS_LOG_FILE}.*.log"/>
+                    <IfLastModified age="${retentionDay}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="ApiLog" fileName="${LOG_PATH}/${API_LOG_FILE}"
+                     filePattern="${LOG_PATH}/${API_LOG_FILE}.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>${API_LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <!-- The triggering policy determines if a rollover should be performed
+            while the RolloverStrategy defines how the rollover should be done-->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="2 GB"/>
+            </Policies>
+            <!-- The maximum number of files to keep -->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${LOG_PATH}">
+                    <IfFileName glob="${API_LOG_FILE}.*.log"/>
+                    <IfLastModified age="${retentionDay}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="ERROR"/>
+        <Logger name="org.lili.forfun">
+            <Level value="INFO"/>
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="STANDARD_FILE"/>
+        </Logger>
+    </Loggers>
+</Configuration>
