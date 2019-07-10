@@ -12,10 +12,12 @@ import org.springframework.context.annotation.PropertySources;
 
 
 @SpringBootApplication
+//mac open
 //@PropertySources({
 //    @PropertySource("file:/opt/tiger/tiger.properties"),
 //    @PropertySource("file:/opt/tiger/tiger-common.properties"),
 //})
+//windows open
 @PropertySources({
     @PropertySource("classpath:tiger.properties"),
     @PropertySource("classpath:tiger-common.properties"),
